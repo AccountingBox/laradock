@@ -654,7 +654,10 @@ USER root
 ARG INSTALL_IMAGEMAGICK=false
 
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
-    apt-get install -y --force-yes imagemagick php-imagick \
+    apt-get update && apt-get install -y libmagickwand-dev imagemagick && \
+    pecl install imagick && \
+    echo "extension=imagick.so" >> /etc/php/${PHP_VERSION}/mods-available/imagick.ini && \
+    phpenmod imagick \
 ;fi
 
 ###########################################################################
